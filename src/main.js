@@ -39,21 +39,25 @@ console.log(getActiveCourses(coursesData));
 //   }
 // ]
 
-
 function createCoursesOverview(courses) {
-    const activeCourses = getActiveCourses(courses);
+  const activeCourses = getActiveCourses(courses);
 
-    const titles = activeCourses.toSorted((a,b) => a.price -b.price).map(courses =>`${courses.title} — ${courses.price} грн`);
-    
-    const totalStudents = activeCourses.reduce((sum, course) => sum += course.students, 0);
-    const allHaveStudents = activeCourses.every(course => course.students > 0);
-    const hasFreeCourse = activeCourses.some(course => course.price === 0);
-    return {
-        titles,
-        totalStudents,
-        allHaveStudents,
-        hasFreeCourse,
-    };
+  const titles = activeCourses
+    .toSorted((a, b) => a.price - b.price)
+    .map(courses => `${courses.title} — ${courses.price} грн`);
+
+  const totalStudents = activeCourses.reduce(
+    (sum, course) => (sum += course.students),
+    0
+  );
+  const allHaveStudents = activeCourses.every(course => course.students > 0);
+  const hasFreeCourse = activeCourses.some(course => course.price === 0);
+  return {
+    titles,
+    totalStudents,
+    allHaveStudents,
+    hasFreeCourse,
+  };
 }
 
 console.log(createCoursesOverview(coursesData));
@@ -63,3 +67,37 @@ console.log(createCoursesOverview(coursesData));
 //   allHaveStudents: true,
 //   hasFreeCourse: false
 // }
+
+// task-03
+
+class Course {
+  #students;
+
+  constructor(courseInfo) {
+    this.title = courseInfo.title;
+    this.price = courseInfo.price;
+    this.#students = courseInfo.students;
+  }
+  enrollStudent() {
+    this.#students += 1;
+  }
+  getStudentsCount() {
+    return this.#students;
+  }
+  getInfo() {
+    return `${this.title}: ${this.#students} студентів, ${this.price} грн`;
+  }
+}
+
+const course = new Course({
+  title: 'JavaScript Basics',
+  price: 1200,
+  students: 20,
+});
+
+course.enrollStudent();
+
+console.log(course.getStudentsCount()); // 21
+
+console.log(course.getInfo());
+// JavaScript Basics: 21 студентів, 1200 грн
