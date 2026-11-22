@@ -38,3 +38,28 @@ console.log(getActiveCourses(coursesData));
 //     isActive: true
 //   }
 // ]
+
+
+function createCoursesOverview(courses) {
+    const activeCourses = getActiveCourses(courses);
+
+    const titles = activeCourses.toSorted((a,b) => a.price -b.price).map(courses =>`${courses.title} — ${courses.price} грн`);
+    
+    const totalStudents = activeCourses.reduce((sum, course) => sum += course.students, 0);
+    const allHaveStudents = activeCourses.every(course => course.students > 0);
+    const hasFreeCourse = activeCourses.some(course => course.price === 0);
+    return {
+        titles,
+        totalStudents,
+        allHaveStudents,
+        hasFreeCourse,
+    };
+}
+
+console.log(createCoursesOverview(coursesData));
+// {
+//   titles: ['HTML & CSS — 900 грн', 'JavaScript Basics — 1200 грн'],
+//   totalStudents: 45,
+//   allHaveStudents: true,
+//   hasFreeCourse: false
+// }
