@@ -101,3 +101,36 @@ console.log(course.getStudentsCount()); // 21
 
 console.log(course.getInfo());
 // JavaScript Basics: 21 студентів, 1200 грн
+
+class CourseCatalog {
+  #courses;
+
+  constructor(courses) {
+    this.#courses = getActiveCourses(courses).map(course => {
+      return new Course(course);
+    });
+  }
+
+  addCourse(course) {
+    this.#courses.push(course);
+  }
+
+  findCourse(title) {
+    return this.#courses.find(course => {
+      return course.title === title;
+    });
+  }
+
+  getTotalPotentialIncome() {
+    return this.#courses.reduce((acc, course) => {
+      return (acc += course.getStudentsCount() * course.price);
+    }, 0);
+  }
+}
+
+const catalog = new CourseCatalog(coursesData);
+
+console.log(catalog.findCourse('HTML & CSS').getInfo());
+// HTML & CSS: 25 студентів, 900 грн
+
+console.log(catalog.getTotalPotentialIncome()); // 46500
